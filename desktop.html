@@ -1,0 +1,297 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LegacyOS Genesis</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Alegreya:wght@400;500;600;700&display=swap');
+
+:root {
+  --green: #0b2418;
+  --emerald: #164c32;
+  --gold: #c9ad75;
+  --glass: rgba(10,24,17,.88);
+  --white: #edf2eb;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  font-family: 'Alegreya', serif;
+}
+
+body {
+  height: 100vh;
+  overflow: hidden;
+  color: var(--white);
+  background:
+    radial-gradient(ellipse at 70% 70%, #286346 0%, transparent 45%),
+    linear-gradient(135deg,#07130d,#102e1e,#030b07);
+}
+
+.desktop {
+  height: 100vh;
+  padding: 28px;
+}
+
+.brand {
+  font-size: 24px;
+  color: var(--gold);
+  letter-spacing: 2px;
+}
+
+.subtitle {
+  color: #a6b9aa;
+  font-size: 13px;
+}
+
+.icons {
+  margin-top: 45px;
+  display: grid;
+  gap: 28px;
+  width: 90px;
+}
+
+.app-icon {
+  cursor: pointer;
+  text-align: center;
+  padding: 10px 4px;
+  border-radius: 10px;
+  color: white;
+}
+
+.app-icon:hover {
+  background: #ffffff19;
+}
+
+.app-icon span {
+  display: block;
+  font-size: 30px;
+  margin-bottom: 5px;
+}
+
+.window {
+  position: absolute;
+  width: min(580px,85vw);
+  height: 350px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  background: var(--glass);
+  border: 1px solid #ffffff25;
+  border-radius: 13px;
+  backdrop-filter: blur(25px);
+  box-shadow: 0 25px 80px #0008;
+  display: none;
+  overflow: hidden;
+}
+
+.window-header {
+  height: 48px;
+  background: #ffffff0b;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 17px;
+  border-bottom: 1px solid #ffffff16;
+  color: var(--gold);
+}
+
+.close {
+  cursor: pointer;
+  font-size: 21px;
+}
+
+.window-content {
+  padding: 25px;
+}
+
+.window-content h2 {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.window-content p {
+  color: #b5c5b8;
+}
+
+.taskbar {
+  position: fixed;
+  bottom: 0;
+  height: 65px;
+  width: 100%;
+  background: rgba(3,12,7,.88);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid #ffffff19;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 25px;
+}
+
+.start {
+  color: var(--gold);
+  font-size: 22px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.task-apps {
+  display: flex;
+  gap: 20px;
+}
+
+.task-apps span {
+  cursor: pointer;
+  font-size: 22px;
+}
+
+.clock {
+  text-align: right;
+  color: #d6e0d6;
+}
+
+.clock small {
+  display: block;
+  color: #a3b6a6;
+}
+
+.start-menu {
+  position: fixed;
+  bottom: 75px;
+  left: 15px;
+  width: 260px;
+  padding: 22px;
+  background: var(--glass);
+  border: 1px solid #ffffff25;
+  border-radius: 14px;
+  display: none;
+  backdrop-filter: blur(25px);
+}
+
+.start-menu button {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin-top: 8px;
+  background: #ffffff0b;
+  border: 0;
+  color: white;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 7px;
+}
+
+.start-menu button:hover {
+  background: var(--emerald);
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="desktop">
+
+  <div class="brand">LEGACYOS</div>
+  <div class="subtitle">GENESIS · VERSION 0.1.0</div>
+
+  <div class="icons">
+    <div class="app-icon" onclick="openApp('Computer')">
+      <span>▣</span>Computer
+    </div>
+
+    <div class="app-icon" onclick="openApp('Terminal')">
+      <span>⌘</span>Terminal
+    </div>
+
+    <div class="app-icon" onclick="openApp('Settings')">
+      <span>⚙</span>Settings
+    </div>
+
+    <div class="app-icon" onclick="openApp('About')">
+      <span>◇</span>About
+    </div>
+  </div>
+
+</div>
+
+<div class="window" id="window">
+  <div class="window-header">
+    <span id="windowTitle">Application</span>
+    <span class="close" onclick="closeApp()">×</span>
+  </div>
+
+  <div class="window-content" id="windowContent"></div>
+</div>
+
+<div class="start-menu" id="startMenu">
+  <h2 style="color:#c9ad75">LegacyOS</h2>
+  <p style="color:#a6b9aa">Genesis Desktop</p>
+
+  <button onclick="openApp('Computer')">Computer</button>
+  <button onclick="openApp('Terminal')">Terminal</button>
+  <button onclick="openApp('Settings')">Settings</button>
+  <button onclick="openApp('About')">About LegacyOS</button>
+</div>
+
+<div class="taskbar">
+  <div class="start" onclick="toggleStart()">LEGACY</div>
+
+  <div class="task-apps">
+    <span onclick="openApp('Computer')">▣</span>
+    <span onclick="openApp('Terminal')">⌘</span>
+    <span onclick="openApp('Settings')">⚙</span>
+  </div>
+
+  <div class="clock">
+    <div id="time">00:00</div>
+    <small id="date"></small>
+  </div>
+</div>
+
+<script>
+const windowBox = document.getElementById('window');
+const content = document.getElementById('windowContent');
+
+function openApp(name) {
+  document.getElementById('windowTitle').textContent = name;
+  windowBox.style.display = 'block';
+
+  const pages = {
+    Computer: '<h2>Computer</h2><p>Welcome to LegacyOS. File management coming soon.</p>',
+    Terminal: '<h2>Terminal</h2><p>LegacyOS Genesis command interface.</p><br><p>kernel@legacyos:~$ _</p>',
+    Settings: '<h2>Settings</h2><p>Desktop preferences</p><p>Theme: Emerald</p><p>Version: 0.1.0</p>',
+    About: '<h2>LegacyOS Genesis</h2><p>A new operating system project.</p><br><p>Built with C, C++, Rust and Assembly.</p>'
+  };
+
+  content.innerHTML = pages[name] || '<h2>Application</h2>';
+  document.getElementById('startMenu').style.display = 'none';
+}
+
+function closeApp() {
+  windowBox.style.display = 'none';
+}
+
+function toggleStart() {
+  const menu = document.getElementById('startMenu');
+  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+}
+
+function updateClock() {
+  const now = new Date();
+  document.getElementById('time').textContent =
+    now.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+  document.getElementById('date').textContent =
+    now.toLocaleDateString();
+}
+
+updateClock();
+setInterval(updateClock,1000);
+</script>
+
+</body>
+</html>
